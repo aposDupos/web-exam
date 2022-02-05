@@ -12,6 +12,9 @@ const actions = {
 const mutations = {
   setAnimals(state, animals) {
     state.animals = animals
+  },
+  addAnimal(state, payload){
+    state.animals = [...state.animals, payload]
   }
 }
 

@@ -72,7 +72,7 @@
 
 <script>
 
-import {mapActions, mapMutations} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 
 export default {
   name: "AnimalsForm",
@@ -93,13 +93,19 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters({
+      animals: 'animals/animals'
+    })
+  },
   methods: {
-      ...mapActions({
-        getAnimals: 'animals/getAnimals'
-      }),
-      ...mapMutations({
-        setAnimals: 'animals/setAnimals'
-      }),
+    ...mapActions({
+      getWidget: 'common/getWidget'
+    }),
+    ...mapMutations({
+      addAnimal: 'animals/addAnimal',
+      setWidget: 'common/setWidget'
+    }),
     async submit() {
       this.valid = this.$refs.form.validate()
       if (this.valid) {
@@ -107,15 +113,18 @@ export default {
         const formData = new FormData
         formData.append('color', 'red')
         Object.keys(this.form).forEach(key => {
-          formData.append(key, this.form.key)
+          formData.append(key, this.form[key])
         })
-        this.$axios.$post('/api/farm/baby', formData, {headers:{
-          'Content-Type': 'multipart/form-data',
-        }},).then((res) => {
+        this.$axios.$post('/api/farm/baby', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        },).then((res) => {
           console.log(res.data);
         });
-        const animals = await this.getAnimals();
-        this.setAnimals(animals)
+        const id = this.animals[this.animals.length - 1].id + 1
+        this.addAnimal({...this.form, id})
+        this.setWidget(await this.getWidget())
       }
     },
 

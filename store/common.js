@@ -1,20 +1,25 @@
 const getters = {
-  isDialogOpened: ({isDialogOpened}) => isDialogOpened
+  leftWidget: ({leftWidget}) => leftWidget
 }
 
-const actions = {}
+const actions = {
+  async getWidget() {
+    const widgetData = await this.$axios.$get('/api/farm/left_widget')
+    return widgetData
+  },
+}
 
 const mutations = {
-  setDialogOpened(state, isDialogOpened) {
-    state.isDialogOpened = isDialogOpened
+  setWidget(state, widgetData){
+    state.leftWidget = widgetData
+  },
+  addWidget(state, payload){
+    state.leftWidget[payload]=state.leftWidget[payload]+1
   }
 }
 
 const state = () => ({
-  isDialogOpened: {
-    type: Boolean,
-    default: false
-  }
+  leftWidget: {}
 })
 
 export {

@@ -7,7 +7,7 @@
   >
     <v-card-title>В нашем роддоме родилось:</v-card-title>
     <v-list light shaped>
-      <v-list-item v-for="(animal, key, index) in widgetData" :key="key">
+      <v-list-item v-for="(animal, key, index) in leftWidget" :key="key">
         <v-list-item-icon>
           <v-icon v-text="animals[index].icon"/>
         </v-list-item-icon>
@@ -21,14 +21,15 @@
 </template>
 
 <script>
+import {mapActions, mapMutations, mapGetters} from "vuex";
+
 export default {
   name: "LeftWidget",
   async fetch() {
-    this.widgetData = await this.$axios.$get('/api/farm/left_widget')
+    this.setWidget(await this.getWidget())
   },
   data() {
     return {
-      widgetData: {},
       animals: [
         {
           name: 'Добрейших коровок:',
@@ -42,6 +43,19 @@ export default {
         },
       ]
     }
+  },
+  computed: {
+    ...mapGetters({
+      leftWidget: 'common/leftWidget'
+    })
+  },
+  methods: {
+    ...mapActions({
+      getWidget: 'common/getWidget'
+    }),
+    ...mapMutations({
+      setWidget: 'common/setWidget'
+    })
   }
 }
 </script>
