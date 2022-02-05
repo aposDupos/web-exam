@@ -100,10 +100,11 @@ export default {
   },
   methods: {
     ...mapActions({
-      getWidget: 'common/getWidget'
+      getWidget: 'common/getWidget',
+      getAnimals: 'animals/getAnimals'
     }),
     ...mapMutations({
-      addAnimal: 'animals/addAnimal',
+      setAnimals: 'animals/setAnimals',
       setWidget: 'common/setWidget'
     }),
     async submit() {
@@ -122,8 +123,7 @@ export default {
         },).then((res) => {
           console.log(res.data);
         });
-        const id = this.animals[this.animals.length - 1].id + 1
-        this.addAnimal({...this.form, id})
+        this.setAnimals(await this.getAnimals())
         this.setWidget(await this.getWidget())
       }
     },
