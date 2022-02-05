@@ -1,84 +1,49 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+  <v-app>
     <v-app-bar
       :clipped-left="clipped"
       fixed
       app
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      <v-row align="center">
+        <v-col cols="3">
+          <Logo/>
+        </v-col>
+        <v-col cols="9">
+          <v-toolbar-title v-text="title"/>
+        </v-col>
+      </v-row>
     </v-app-bar>
     <v-main>
-      <v-container>
-        <Nuxt />
+      <v-container fluid>
+        <v-row>
+          <v-col cols="3">
+            <v-list>
+              <v-list-item
+                nuxt
+                v-for="item in items"
+                :key="item.to"
+                :to="item.to"
+              >
+                <v-list-item-icon>
+                  <v-icon>
+                    {{ item.icon }}
+                  </v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.title"/>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+            <LeftWidget/>
+          </v-col>
+          <v-col cols="9">
+            <Nuxt/>
+          </v-col>
+        </v-row>
+
       </v-container>
     </v-main>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
     <v-footer
       :absolute="!fixed"
       app
@@ -89,29 +54,34 @@
 </template>
 
 <script>
+import Logo from "../components/Logo";
+import LeftWidget from "../components/LeftWidget";
+
 export default {
   name: 'DefaultLayout',
-  data () {
+  components: {LeftWidget, Logo},
+  data() {
     return {
       clipped: false,
-      drawer: false,
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
+          icon: 'mdi-home',
+          title: 'Главная',
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          icon: 'mdi-face-man',
+          title: 'О нас',
+          to: '/about-us'
+        },
+        {
+          icon: 'mdi-cow',
+          title: 'Создать новое животное',
+          to: '/form'
         }
       ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'Фермерский роддом номер 5'
     }
   }
 }
