@@ -78,7 +78,7 @@ export default {
         {
           icon: 'mdi-cow',
           title: 'Создать новое животное',
-          to: '/form'
+          to: '/animals'
         }
       ],
       title: 'Фермерский роддом номер 5'
